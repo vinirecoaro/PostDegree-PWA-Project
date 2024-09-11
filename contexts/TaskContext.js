@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState } from "react"
+import { addTask, getTasks} from "../utils/indexedDB"
 
 // Create context
 const TaskContext = createContext()
@@ -14,10 +15,17 @@ export const useTaskContext = () => {
 export const TaskProvider = ({children}) => {
     const [tasks, setTasks] = useState([]);
 
-    const addNewTask = (task) => {
-        setTasks(
-            (prevTasks) => [...prevTasks, task]
-        )
+    const addNewTask = async (task) => {
+
+        await addTask(task)
+
+        const tasksFromDB = await getTasks()
+
+        setTasks(tasksFromDB)
+
+        // setTasks(
+        //     (prevTasks) => [...prevTasks, task]
+        // )
     }
 
     return (

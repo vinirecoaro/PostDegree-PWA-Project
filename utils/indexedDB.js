@@ -14,10 +14,17 @@ export async function initDB(){
 
 export async function addTask(task) {
     const db = await initDB()
-    return db.add('tasks', task)
+    const tx = db.transaction('tasks', 'readwrite')
+    const store = tx.objectStore('tasks')
+    await store.add(task)
+    await tx.done
 }
 
 export async function getTasks() {
     const db = await initDB()
-    return db.getAll('tasks')
+    const tx = db.transaction('tasks', 'readonly')
+    const store = tx.objectStore('tasks')
+    const allTasks = await store.getAll()
+    await tx.done
+    return allTasks
 }
