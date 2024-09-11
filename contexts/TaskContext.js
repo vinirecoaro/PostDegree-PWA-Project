@@ -15,7 +15,9 @@ export const TaskProvider = ({children}) => {
     const [tasks, setTasks] = useState([]);
 
     const addNewTask = (task) => {
-        setTasks = ((prevTasks) => [...prevTasks, task])
+        setTasks(
+            (prevTasks) => [...prevTasks, task]
+        )
     }
 
     return (
